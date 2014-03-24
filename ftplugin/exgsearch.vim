@@ -1,7 +1,9 @@
 " local settings {{{1
-silent! setlocal buftype=
+silent! setlocal buftype=nofile
 silent! setlocal bufhidden=hide
+silent! setlocal noswapfile
 silent! setlocal nobuflisted
+
 silent! setlocal cursorline
 silent! setlocal number
 silent! setlocal nowrap
