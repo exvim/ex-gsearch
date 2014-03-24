@@ -12,10 +12,12 @@ endif
 "     silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
 " endif
 
+syn match ex_gs_help #^".*#
 syntax region ex_gs_header start="^----------" end="----------"
 syntax region ex_gs_filename start="^[^:]*" end=":" oneline
 syntax match ex_gs_linenr '\d\+:'
 
+hi link ex_gs_help Comment
 hi link ex_gs_header SpecialKey
 hi link ex_gs_filename Directory
 hi link ex_gs_linenr Special

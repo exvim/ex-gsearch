@@ -20,7 +20,14 @@ nmap <buffer> <2-LeftMouse> <Plug>EXGSConfirmSelect
 nmap <buffer> <S-Return> <Plug>EXGSShiftConfirmSelect
 nmap <buffer> <S-2-LeftMouse> <Plug>EXGSShiftConfirmSelect
 
-" nnoremap <silent> <buffer> <leader>r :EXProjectRefresh<CR>
+command! -buffer -nargs=1 Filter call exgsearch#filter('<args>', 'pattern', 0)
+command! -buffer -nargs=1 FilterFile call exgsearch#filter('<args>', 'file', 0)
+command! -buffer -nargs=1 ReverseFilter call exgsearch#filter('<args>', 'pattern', 1)
+command! -buffer -nargs=1 ReverseFilterFile call exgsearch#filter('<args>', 'file', 1)
+nnoremap <silent> <buffer> <leader>r :exec 'Filter ' . @/<CR>
+nnoremap <silent> <buffer> <leader>fr :exec 'FilterFile ' . @/<CR>
+nnoremap <silent> <buffer> <leader>d :exec 'ReverseFilter ' . @/<CR>
+nnoremap <silent> <buffer> <leader>fd :exec 'ReverseFilterFile ' . @/<CR>
 " }}}1
 
 " auto command {{{1

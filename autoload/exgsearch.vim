@@ -149,10 +149,10 @@ function! s:search_result_comp (line1, line2)
     endif
 endfunction
 
-function! s:sort_search_result()
-    let lines = getline(3, '$')
+function! s:sort_search_result( start, end )
+    let lines = getline( a:start, a:end )
     silent call sort(lines, 's:search_result_comp')
-    silent call setline(3, lines)
+    silent call setline(a:start, lines)
 endfunction
 
 function exgsearch#search( pattern, option )
@@ -174,21 +174,27 @@ function exgsearch#search( pattern, option )
         echomsg 'search ' . a:pattern . '...(case sensitive)'
         let cmd = 'lid --result=grep -f' . id_path . ' ' . a:option . ' ' . a:pattern
     endif
+
+    " TODO: online help
+    let help = '" Press ? for help'
     let header = '---------- ' . a:pattern . ' ----------'
-    let search_result = header . "\n" 
-    let search_result .= system(cmd)
+    let result = system(cmd)
+    let text = help . "\n\n" . header . "\n" . result
 
     " open the global search window
     call exgsearch#open_window()
 
     " clear screen and put new result
     silent exec '1,$d _'
-    silent put = search_result
+    silent 0put = text
+    silent exec '$d'
+    let start_line = 4
+    let end_line = line('$')
 
     " sort the search result
     if g:ex_gsearch_enable_sort == 1
-        if line('$') <= g:ex_gsearch_sort_lines_threshold
-            call s:sort_search_result ()
+        if (end_line-start_line) <= g:ex_gsearch_sort_lines_threshold
+            call s:sort_search_result ( start_line, end_line )
         endif
     endif
 
@@ -198,6 +204,36 @@ function exgsearch#search( pattern, option )
     silent call cursor(linenr,1)
     silent normal zz
 endfunction
+
+" exgsearch#filter {{{2
+" option: 'pattern', 'file'
+" reverse: 0, 1
+function exgsearch#filter( pattern, option, reverse )
+    if a:pattern == ''
+        call ex#warning('Search pattern is empty. Please provide your search pattern')
+        return
+    endif
+
+    let final_pattern = a:pattern
+    if a:option == 'pattern'
+        let final_pattern = '^.\+:\d\+:.*\zs' . a:pattern
+    elseif a:option == 'file'
+        let final_pattern = '\(.\+:\d\+:\)\&' . a:pattern
+    endif
+    let range = '4,$'
+
+    " if reverse search, we first filter out not pattern line, then then filter pattern
+    if a:reverse 
+        let search_results = '\(.\+:\d\+:\).*'
+        silent exec range . 'v/' . search_results . '/d'
+        silent exec range . 'g/' . final_pattern . '/d'
+    else
+        silent exec range . 'v/' . final_pattern . '/d'
+    endif
+    silent call cursor( 4, 1 )
+    call ex#hint('Filter ' . a:option . ': ' . a:pattern )
+endfunction
+
 
 " }}}1
 
