@@ -33,19 +33,3 @@ To install using [NeoBundle](https://github.com/Shougo/neobundle.vim):
     unzip ex-gsearch-master.zip
     copy all of the files into your ~/.vim directory
 
-## Known Issues
-
-If you use mkid and meet the following problem on Windows:
-
-```
-mkid: can't read entire the language map file 'your/path/of/the/id-lang.map': No such 
-file or directory
-```
-
-This is because the `id-lang.map` you specified is not use the `unix` fileformat.
-You can fix this by open the file in Vim and type:
-
-```vim
-:set fileformat=unix 
-```
-then save it.
