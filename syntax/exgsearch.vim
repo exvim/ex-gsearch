@@ -12,12 +12,19 @@ endif
 "     silent exec "so $VIM/vimfiles/after/syntax/exUtility.vim"
 " endif
 
-syn match ex_gs_help #^".*#
+syntax match ex_gs_help #^".*# contains=ex_gs_help_key
+syntax match ex_gs_help_key '^" \S\+:'hs=s+2,he=e-1 contained contains=ex_gs_help_comma
+syntax match ex_gs_help_comma ':' contained
+
 syntax region ex_gs_header start="^----------" end="----------"
-syntax region ex_gs_filename start="^[^:]*" end=":" oneline
+syntax region ex_gs_filename start="^[^"][^:]*" end=":" oneline
 syntax match ex_gs_linenr '\d\+:'
 
+
 hi link ex_gs_help Comment
+hi link ex_gs_help_key Label
+hi link ex_gs_help_comma Special
+
 hi link ex_gs_header SpecialKey
 hi link ex_gs_filename Directory
 hi link ex_gs_linenr Special

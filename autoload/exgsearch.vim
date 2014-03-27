@@ -1,12 +1,19 @@
 " variables {{{1
 let s:title = "-GSearch-" 
-let s:zoom_in = 0
 let s:confirm_at = -1
+
+let s:zoom_in = 0
 let s:keymap = {}
+
+let s:help_open = 0
+let s:help_text_short = [
+            \ '" Press <F1> for help',
+            \ '',
+            \ ]
+let s:help_text = s:help_text_short
 " }}}
 
 " functions {{{1
-
 " exgsearch#bind_mappings {{{2
 function exgsearch#bind_mappings()
     call ex#keymap#bind( s:keymap )
@@ -17,9 +24,27 @@ function exgsearch#register_hotkey( priority, key, action, desc )
     call ex#keymap#register( s:keymap, a:priority, a:key, a:action, a:desc )
 endfunction
 
+" exgsearch#toggle_help {{{2
+" s:update_help_text {{{2
+function s:update_help_text()
+    if s:help_open
+        let s:help_text = ex#keymap#helptext(s:keymap)
+    else
+        let s:help_text = s:help_text_short
+    endif
+endfunction
+
+function exgsearch#toggle_help()
+    let s:help_open = !s:help_open
+    silent exec '1,' . len(s:help_text) . 'd _'
+    call s:update_help_text()
+    silent call append ( 0, s:help_text )
+    silent keepjumps normal! gg
+endfunction
+
 " exgsearch#open_window {{{2
 
-function! s:init_buffer()
+function s:init_buffer()
     set filetype=exgsearch
 endfunction
 
@@ -140,7 +165,7 @@ endfunction
 
 " exgsearch#search {{{2
 
-function! s:search_result_comp (line1, line2)
+function s:search_result_comp (line1, line2)
     let line1lst = matchlist(a:line1 , '^\([^:]*\):\(\d\+\):')
     let line2lst = matchlist(a:line2 , '^\([^:]*\):\(\d\+\):')
     if empty(line1lst) && empty(line2lst)
@@ -160,7 +185,7 @@ function! s:search_result_comp (line1, line2)
     endif
 endfunction
 
-function! s:sort_search_result( start, end )
+function s:sort_search_result( start, end )
     let lines = getline( a:start, a:end )
     silent call sort(lines, 's:search_result_comp')
     silent call setline(a:start, lines)
@@ -185,21 +210,25 @@ function exgsearch#search( pattern, option )
         echomsg 'search ' . a:pattern . '...(case sensitive)'
         let cmd = 'lid --result=grep -f' . id_path . ' ' . a:option . ' ' . a:pattern
     endif
-
-    " TODO: online help
-    let help = '" Press ? for help'
-    let header = '---------- ' . a:pattern . ' ----------'
     let result = system(cmd)
-    let text = help . "\n\n" . header . "\n" . result
 
     " open the global search window
     call exgsearch#open_window()
 
     " clear screen and put new result
     silent exec '1,$d _'
-    silent 0put = text
+
+    " add online help 
+    silent call append ( 0, s:help_text )
     silent exec '$d'
-    let start_line = 4
+    let start_line = len(s:help_text)
+
+    " put the result
+    silent exec 'normal ' . start_line . 'g'
+    let header = '---------- ' . a:pattern . ' ----------'
+    let start_line += 1
+    let text = header . "\n" . result
+    silent put =text
     let end_line = line('$')
 
     " sort the search result
@@ -231,7 +260,8 @@ function exgsearch#filter( pattern, option, reverse )
     elseif a:option == 'file'
         let final_pattern = '\(.\+:\d\+:\)\&' . a:pattern
     endif
-    let range = '4,$'
+    let start_line = len(s:help_text)+2
+    let range = start_line.',$'
 
     " if reverse search, we first filter out not pattern line, then then filter pattern
     if a:reverse 
@@ -241,7 +271,7 @@ function exgsearch#filter( pattern, option, reverse )
     else
         silent exec range . 'v/' . final_pattern . '/d'
     endif
-    silent call cursor( 4, 1 )
+    silent call cursor( start_line, 1 )
     call ex#hint('Filter ' . a:option . ': ' . a:pattern )
 endfunction
 
