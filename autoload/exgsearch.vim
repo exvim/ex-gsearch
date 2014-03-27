@@ -2,9 +2,20 @@
 let s:title = "-GSearch-" 
 let s:zoom_in = 0
 let s:confirm_at = -1
+let s:keymap = {}
 " }}}
 
 " functions {{{1
+
+" exgsearch#bind_mappings {{{2
+function exgsearch#bind_mappings()
+    call ex#keymap#bind( s:keymap )
+endfunction
+
+" exgsearch#register_hotkey {{{2
+function exgsearch#register_hotkey( priority, key, action, desc )
+    call ex#keymap#register( s:keymap, a:priority, a:key, a:action, a:desc )
+endfunction
 
 " exgsearch#open_window {{{2
 
