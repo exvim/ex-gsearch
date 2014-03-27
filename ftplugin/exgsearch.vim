@@ -14,11 +14,13 @@ silent! setlocal statusline=
 nnoremap <silent> <buffer> <ESC> :EXGSearchClose<CR>
 nnoremap <silent> <buffer> <Space> :call exgsearch#toggle_zoom()<CR>
 
-nmap <buffer> <CR> <Plug>EXGSConfirmSelect
-nmap <buffer> <2-LeftMouse> <Plug>EXGSConfirmSelect
+nnoremap <silent> <buffer> <Plug>ConfirmSelect :call exgsearch#confirm_select('')<CR>
+nmap <silent> <buffer> <CR> <Plug>ConfirmSelect
+nmap <silent> <buffer> <2-LeftMouse> <Plug>ConfirmSelect
 
-nmap <buffer> <S-Return> <Plug>EXGSShiftConfirmSelect
-nmap <buffer> <S-2-LeftMouse> <Plug>EXGSShiftConfirmSelect
+nnoremap <silent> <buffer> <Plug>ShiftConfirmSelect :call exgsearch#confirm_select('shift')<CR>
+nmap <silent> <buffer> <S-Return> <Plug>ShiftConfirmSelect
+nmap <silent> <buffer> <S-2-LeftMouse> <Plug>ShiftConfirmSelect
 
 command! -buffer -nargs=1 Filter call exgsearch#filter('<args>', 'pattern', 0)
 command! -buffer -nargs=1 FilterFile call exgsearch#filter('<args>', 'file', 0)

@@ -36,9 +36,4 @@ command! EXGSearchOpen call exgsearch#open_window()
 command! EXGSearchClose call exgsearch#close_window()
 "}}}
 
-" mappings {{{1
-nnoremap <silent> <Plug>EXGSConfirmSelect :call exgsearch#confirm_select('')<CR>
-nnoremap <silent> <Plug>EXGSShiftConfirmSelect :call exgsearch#confirm_select('shift')<CR>
-"}}}
-
 " vim:ts=4:sw=4:sts=4 et fdm=marker:
