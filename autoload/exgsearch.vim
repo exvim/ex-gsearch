@@ -44,7 +44,7 @@ endfunction
 
 " exgsearch#open_window {{{2
 
-function s:init_buffer()
+function exgsearch#init_buffer()
     set filetype=exgsearch
 endfunction
 
@@ -57,7 +57,7 @@ function exgsearch#open_window()
                     \ g:ex_gsearch_winpos,
                     \ 1,
                     \ 1,
-                    \ function('s:init_buffer')
+                    \ function('exgsearch#init_buffer')
                     \ )
 
         if s:confirm_at != -1
