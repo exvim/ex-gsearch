@@ -46,6 +46,11 @@ endfunction
 
 function exgsearch#init_buffer()
     set filetype=exgsearch
+
+    if ( line('$') <= 1 )
+        silent call append ( 0, s:help_text )
+        silent exec '$d'
+    endif
 endfunction
 
 function exgsearch#open_window()
@@ -59,7 +64,6 @@ function exgsearch#open_window()
                     \ 1,
                     \ function('exgsearch#init_buffer')
                     \ )
-
         if s:confirm_at != -1
             call ex#hl#confirm_line(s:confirm_at)
         endif
