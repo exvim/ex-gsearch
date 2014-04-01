@@ -54,6 +54,8 @@ function exgsearch#init_buffer()
 endfunction
 
 function exgsearch#open_window()
+    call ex#window#goto_edit_window()
+
     let winnr = bufwinnr(s:title)
     if winnr == -1
         call ex#window#open( 
