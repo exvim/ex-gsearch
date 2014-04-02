@@ -208,7 +208,7 @@ function exgsearch#search( pattern, option )
     " ignore case setup
     let ignore_case = g:ex_gsearch_ignore_case
     " smartcase check
-    if match(a:pattern, '\u') == -1
+    if match(a:pattern, '\u') != -1
         let ignore_case = 0
     endif
 

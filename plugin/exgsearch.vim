@@ -13,7 +13,7 @@ if !exists('g:ex_gsearch_winpos')
 endif
 
 if !exists('g:ex_gsearch_ignore_case')
-    let g:ex_gsearch_ignore_case = 0
+    let g:ex_gsearch_ignore_case = 1
 endif
 
 if !exists('g:ex_gsearch_enable_sort')
