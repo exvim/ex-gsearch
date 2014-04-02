@@ -21,13 +21,13 @@ syntax region ex_gs_filename start="^[^"][^:]*" end=":" oneline
 syntax match ex_gs_linenr '\d\+:'
 
 
-hi link ex_gs_help Comment
-hi link ex_gs_help_key Label
-hi link ex_gs_help_comma Special
+hi default link ex_gs_help Comment
+hi default link ex_gs_help_key Label
+hi default link ex_gs_help_comma Special
 
-hi link ex_gs_header SpecialKey
-hi link ex_gs_filename Directory
-hi link ex_gs_linenr Special
+hi default link ex_gs_header SpecialKey
+hi default link ex_gs_filename Directory
+hi default link ex_gs_linenr Special
 
 let b:current_syntax = "exgsearch"
 
