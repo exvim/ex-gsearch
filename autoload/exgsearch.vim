@@ -215,10 +215,10 @@ function exgsearch#search( pattern, option )
     " start search process
     if ignore_case
         echomsg 'search ' . a:pattern . '...(case insensitive)'
-        let cmd = 'lid --result=grep -i -f' . id_path . ' ' . a:option . ' ' . a:pattern
+        let cmd = 'lid --result=grep -i -f' . fnameescape(id_path) . ' ' . a:option . ' ' . a:pattern
     else
         echomsg 'search ' . a:pattern . '...(case sensitive)'
-        let cmd = 'lid --result=grep -f' . id_path . ' ' . a:option . ' ' . a:pattern
+        let cmd = 'lid --result=grep -f' . fnameescape(id_path) . ' ' . a:option . ' ' . a:pattern
     endif
     let result = system(cmd)
 
