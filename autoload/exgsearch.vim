@@ -138,18 +138,9 @@ function exgsearch#confirm_select(modifier)
     " goto edit window
     call ex#window#goto_edit_window()
 
-    " if we don't start a new stack, we pop the old jump, so that the new one
-    " will only take the old stack position while we are selecting our result. 
-    " TODO:
-    " let keepjumps_cmd = '' 
-    " if !s:exGS_need_push_search_result 
-    "     let keepjumps_cmd = 'keepjumps' 
-    " endif 
-    let keepjumps_cmd = 'keepjumps' 
-
     " open the file
     if bufnr('%') != bufnr(filename) 
-        exe keepjumps_cmd . ' silent e ' . escape(filename,' ') 
+        exe ' silent e ' . escape(filename,' ') 
     endif 
 
     if idx > 0 
@@ -157,7 +148,7 @@ function exgsearch#confirm_select(modifier)
         let line = strpart(line, idx+1) 
         let idx = stridx(line, ":") 
         let linenr  = eval(strpart(line, 0, idx)) 
-        exec keepjumps_cmd . ' call cursor(linenr, 1)' 
+        exec ' call cursor(linenr, 1)' 
 
         " jump to the pattern if the code have been modified 
         let pattern = strpart(line, idx+2) 
