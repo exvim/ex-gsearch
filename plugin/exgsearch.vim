@@ -28,7 +28,7 @@ endif
 "}}}
 
 " commands {{{1
-command! -n=1 GSearch call exgsearch#search('<args>', '-s')
+command! -n=1 -complete=customlist,ex#compl_by_symbol GSearch call exgsearch#search('<args>', '-s')
 command! EXGSearchCWord call exgsearch#search(expand('<cword>'), '-s')
 
 command! EXGSearchToggle call exgsearch#toggle_window()
