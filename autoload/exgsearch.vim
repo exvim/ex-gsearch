@@ -11,6 +11,8 @@ let s:help_text_short = [
             \ '',
             \ ]
 let s:help_text = s:help_text_short
+
+let s:id_file = './ID'
 " }}}
 
 " functions {{{1
@@ -40,17 +42,28 @@ function exgsearch#toggle_help()
     call s:update_help_text()
     silent call append ( 0, s:help_text )
     silent keepjumps normal! gg
+    call ex#hl#clear_confirm()
 endfunction
 
 " exgsearch#open_window {{{2
 
 function exgsearch#init_buffer()
     set filetype=exgsearch
+    au! BufWinLeave <buffer> call <SID>on_close()
 
     if ( line('$') <= 1 )
         silent call append ( 0, s:help_text )
         silent exec '$d'
     endif
+endfunction
+
+function s:on_close()
+    let s:zoom_in = 0
+    let s:help_open = 0
+
+    " go back to edit buffer
+    call ex#window#goto_edit_window()
+    call ex#hl#clear_target()
 endfunction
 
 function exgsearch#open_window()
@@ -194,7 +207,7 @@ endfunction
 
 function exgsearch#search( pattern, option )
     let s:confirm_at = -1
-    let id_path = g:exvim_folder.'/ID' 
+    let id_path = s:id_file
 
     " ignore case setup
     let ignore_case = g:ex_gsearch_ignore_case
@@ -274,6 +287,11 @@ function exgsearch#filter( pattern, option, reverse )
     endif
     silent call cursor( start_line, 1 )
     call ex#hint('Filter ' . a:option . ': ' . a:pattern )
+endfunction
+
+" {{{2
+function exgsearch#set_id_file( path )
+    let s:id_file = a:path
 endfunction
 
 
