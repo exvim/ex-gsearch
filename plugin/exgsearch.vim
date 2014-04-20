@@ -25,6 +25,10 @@ if !exists('g:ex_gsearch_sort_lines_threshold')
     let g:ex_gsearch_sort_lines_threshold = 100
 endif
 
+if !exists('g:ex_gsearch_enable_help')
+    let g:ex_gsearch_enable_help = 1
+endif
+
 "}}}
 
 " commands {{{1

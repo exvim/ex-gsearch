@@ -37,6 +37,10 @@ function s:update_help_text()
 endfunction
 
 function exgsearch#toggle_help()
+    if !g:ex_gsearch_enable_help
+        return
+    endif
+
     let s:help_open = !s:help_open
     silent exec '1,' . len(s:help_text) . 'd _'
     call s:update_help_text()
@@ -51,7 +55,7 @@ function exgsearch#init_buffer()
     set filetype=exgsearch
     au! BufWinLeave <buffer> call <SID>on_close()
 
-    if ( line('$') <= 1 )
+    if line('$') <= 1 && g:ex_gsearch_enable_help
         silent call append ( 0, s:help_text )
         silent exec '$d'
     endif
@@ -233,9 +237,13 @@ function exgsearch#search( pattern, option )
     silent exec '1,$d _'
 
     " add online help 
-    silent call append ( 0, s:help_text )
-    silent exec '$d'
-    let start_line = len(s:help_text)
+    if g:ex_gsearch_enable_help
+        silent call append ( 0, s:help_text )
+        silent exec '$d'
+        let start_line = len(s:help_text)
+    else
+        let start_line = 0
+    endif
 
     " put the result
     silent exec 'normal ' . start_line . 'g'
@@ -274,7 +282,11 @@ function exgsearch#filter( pattern, option, reverse )
     elseif a:option == 'file'
         let final_pattern = '\(.\+:\d\+:\)\&' . a:pattern
     endif
-    let start_line = len(s:help_text)+2
+    if g:ex_gsearch_enable_help
+        let start_line = len(s:help_text)+2
+    else
+        let start_line = 3
+    endif
     let range = start_line.',$'
 
     " if reverse search, we first filter out not pattern line, then then filter pattern
