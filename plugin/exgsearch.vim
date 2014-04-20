@@ -54,4 +54,6 @@ call exgsearch#register_hotkey( 10 , '<leader>d'       , ":exec 'ReverseFilter '
 call exgsearch#register_hotkey( 11 , '<leader>fd'      , ":exec 'ReverseFilterFile ' . @/<CR>"         , 'Reverse filter files in search result.' )
 "}}}
 
+call ex#register_plugin( 'exgsearch', { 'actions': ['autoclose'] } )
+
 " vim:ts=4:sw=4:sts=4 et fdm=marker:
