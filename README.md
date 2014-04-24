@@ -82,7 +82,8 @@ mkid .
 ```
 
 For more details about using `mkid`, read [mkid-invocation](http://www.gnu.org/software/idutils/manual/idutils.html#mkid-invocation).
-You can also specified your search file by [language-map](http://www.gnu.org/software/idutils/manual/idutils.html#Language-map). 
+You can also specified your search file by editing id-utils'
+[language-map](http://www.gnu.org/software/idutils/manual/idutils.html#Language-map). 
 
 You will see the a ID file generated under your directory. 
 
