@@ -75,4 +75,22 @@ To install using [NeoBundle](https://github.com/Shougo/neobundle.vim):
 
 ## Usage
 
-TODO
+Enter your project, use `mkid` command create your ID file:
+
+```bash
+mkid .
+```
+
+For more details about using `mkid`, read [mkid-invocation](http://www.gnu.org/software/idutils/manual/idutils.html#mkid-invocation).
+You can also specified your search file by [language-map](http://www.gnu.org/software/idutils/manual/idutils.html#Language-map). 
+
+You will see the a ID file generated under your directory. 
+
+Start your Vim and try to global search a word by `:GS your-word`. You will see
+a search window opened and the search results of `your-word` in it. 
+
+You can jump to search result by hit the `Enter` on the result line. You can also
+filter the search result by press `/` and search your filter word. After that press
+`<leader>r` and ex-gsearch will help you filter the result.
+
+More details, check `:help exgsearch`.
