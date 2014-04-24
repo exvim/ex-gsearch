@@ -7,6 +7,8 @@ In ex-gsearch, you can:
 - Filter search result by ex-gsearch's powerful filter method.
 - Jump to the search result.
 
+ex-gsearch is part of [exVim](https://github.com/exvim/main) project
+
 ## Requirements
 
 - Vim 6.0 or higher.
@@ -22,9 +24,9 @@ is the basic library of ex-vim-plugins. Follow the readme file in ex-utility to 
 
 ### Install id-utils
 
-ex-gsearch also needs id-utils to become its default search engine. id-utils is a GNU project,
-you can easily install it on Mac or Linux. For Windows user, you can download it from 
-GNU-Win32: http://gnuwin32.sourceforge.net/packages/id-utils.htm 
+ex-gsearch used id-utils as its default search engine. id-utils is a GNU project,
+you can easily install it on Mac and Linux. For Windows user, you can download it from 
+GNU-Win32 project: http://gnuwin32.sourceforge.net/packages/id-utils.htm 
 
 **Mac**
 
@@ -39,7 +41,7 @@ GNU-Win32: http://gnuwin32.sourceforge.net/packages/id-utils.htm
     ## use yum
     yum install id-utils
 
-    ## or compile in your own
+    ## or compile id-utils from source
 
 **Windows**
 
