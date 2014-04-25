@@ -85,13 +85,13 @@ For more details about using `mkid`, read [mkid-invocation](http://www.gnu.org/s
 You can also specified your search file by editing id-utils'
 [language-map](http://www.gnu.org/software/idutils/manual/idutils.html#Language-map). 
 
-You will see the a ID file generated under your directory. 
+You will see a ID file generated under your directory. 
 
-Start your Vim and try to global search a word by `:GS your-word`. You will see
-a search window opened and the search results of `your-word` in it. 
+Start your Vim and try to global search a word by `:GS your-word`. A search window will 
+open and the search results of `your-word` will be listed in it. 
 
-You can jump to search result by hit the `Enter` on the result line. You can also
-filter the search result by press `/` and search your filter word. After that press
-`<leader>r` and ex-gsearch will help you filter the result.
+You can jump to the search result by hit the `Enter` on the listed lines. You can also
+filter the search results by use `/` and do a search on your filter word. After confirmed 
+your search, press `<leader>r` and ex-gsearch will help you filter the result.
 
 More details, check `:help exgsearch`.

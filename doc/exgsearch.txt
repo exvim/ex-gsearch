@@ -1,0 +1,273 @@
+*exgsearch.txt*    Global search plugin for vim.
+
+Author:         Johnny Wu <karasaya@gmail.com>
+Licence:        MIT licence
+Homepage:       http://exvim.github.io/
+Version:        0.1.0
+
+==============================================================================
+Contents                                       *exgsearch*  *exgsearch-contents*
+
+         1. Intro ........................... |exgsearch-intro|
+         2. Requirements .................... |exgsearch-requirements|
+         3. Usage ........................... |exgsearch-usage|
+              Commands ...................... |exgsearch-commands|
+              Key mappings .................. |exgsearch-mappings|
+         4. Configuration ................... |exgsearch-configuration|
+              Highlight colours ............. |exgsearch-highlighting|
+         5. Functions ....................... |exgsearch-functions|
+         6. Troubleshooting & Known issues .. |exgsearch-issues|
+         7. History ......................... |exgsearch-history|
+
+==============================================================================
+1. Intro                                                     *exgsearch-intro*
+
+ex-gsearch is a global search plugin for Vim. By default it use id-utils as 
+its search engine.  In ex-gsearch, you can:
+
+  - List search result in ex-gsearch window.
+  - Filter search result by ex-gsearch's powerful filter method.
+  - Jump to the search result.
+
+ex-gsearch is also a part of exVim (https://github.com/exvim/main) project
+
+==============================================================================
+2. Requirements                                       *exgsearch-requirements*
+
+The following requirements have to be met in order to be able to use 
+exgsearch:
+
+  - Vim 6.0 or higher
+  - ex-utility: (https://github.com/exvim/ex-utility) 
+  - id-utils: (http://www.gnu.org/software/idutils/)
+
+==============================================================================
+3. Usage                                                     *exgsearch-usage*
+
+Enter your project, use `mkid` command create your ID file:
+>
+    mkid .
+<
+
+For more details about using `mkid`, read 
+mkid-invocation (http://www.gnu.org/software/idutils/manual/idutils.html#mkid-invocation).
+You can also specified your search file by editing id-utils' language-map 
+(http://www.gnu.org/software/idutils/manual/idutils.html#Language-map). 
+
+You will see a ID file generated under your directory. 
+
+Start your Vim and try to global search a word by |:GS| <your-word>. A search 
+window will open and the search results of <your-word> will be listed in it. 
+
+You can jump to the search result by hit <CR> on the listed lines. You can also
+filter the search results by press `/` and do a search on your filter word. 
+After confirmed your search, press <leader>r and ex-gsearch will help you 
+filter the result.
+
+------------------------------------------------------------------------------
+COMMANDS                                                  *exgsearch-commands*
+
+:EXProject {file}                                                 *:EXProject*
+    Open project {file} in ex-gsearch winow. If no {file} provide, exgsearch
+    will use ./files.exgsearch as default. 
+
+:EXProjectOpen                                                *:EXProjectOpen*
+    Open ex-gsearch window.
+
+:EXProjectClose                                              *:EXProjectClose*
+    Close ex-gsearch window.
+
+:EXProjectToggle                                            *:EXProjectToggle*
+    Toggle ex-gsearch window.
+
+:EXProjectBuild                                              *:EXProjectBuild*
+    Build project tree.
+
+:EXProjectFind                                                *:EXProjectFind*
+    Find current edit file in project tree.
+
+:EXProjectRefresh                                          *:EXProjectRefresh*
+    Recursively refresh current folder in project tree.
+
+------------------------------------------------------------------------------
+KEY MAPPINGS                                              *exgsearch-mappings*
+
+Default key mappings:
+
+                                                            *'exgsearch-<F1>'*
+<F1>        
+    Toggle Help    
+
+                                                         *'exgsearch-<Space>'*
+<Space>
+    Zoom in/out project window
+
+                                                            *'exgsearch-<CR>'*
+                                                   *'exgsearch-<2-LeftMouse>'*
+<CR> or <2-LeftMouse>
+    When cursor on a file, it will open it in edit window.
+    When cursor on a folder, it will fold in/out the folder.
+
+                                                          *'exgsearch-<S-CR>'*
+                                                 *'exgsearch-<S-2-LeftMouse>'*
+<S-CR> or <S-2-LeftMouse>
+    When cursor on a file, it will open it in edit window splitted.
+    When cursor on a folder, it will open the folder path in OS's file 
+    explorer
+    
+
+                                                       *'exgsearch-<leader>R'*
+<leader>R
+    Rebuild the project tree
+
+                                                       *'exgsearch-<leader>r'*
+<leader>r
+    Refresh current folder your cursor in.
+
+                                                               *'exgsearch-o'*
+o
+    Create new file. The cursor must in a file or folder line. 
+
+                                                               *'exgsearch-O'*
+O
+    Create new folder. The cursor must in a folder line. When start create,
+    exgsearch will ask you to input the new folder name.
+
+                                                         *'exgsearch-<C-Tab>'*
+<C-Tab>
+    Switch between NERDTree and exgsearch. To make it work, your Vim must 
+    have NERDTree installed. exgsearch will add keymapping of <C-Tab> in 
+    NERDTree when it detect the plugin after Vim started.
+
+
+==============================================================================
+4. Configuration                                     *exgsearch-configuration*
+
+                                                           *g:ex_project_file*
+g:ex_project_file~
+Default: './files.exgsearch'
+
+The default path of the project file. When you open the project window and
+no project file specified, it will use this value as default project file 
+path.
+
+                                                        *g:ex_project_winsize*
+g:ex_project_winsize~
+Default: 30
+
+The window size of project window.  
+
+                                                   *g:ex_project_winsize_zoom*
+g:ex_project_winsize_zoom~
+Default: 60
+
+The zoomed size of project window.
+
+                                                         *g:ex_project_winpos*
+g:ex_project_winpos~
+Default: 'left'
+Options: 'left', 'right', 'top', 'bottom'
+
+The position of project window.
+
+                                                    *g:ex_project_enable_help*
+g:ex_project_enable_help~
+Default: 1
+
+Enable help text in the plugin
+
+------------------------------------------------------------------------------
+HIGHLIGHT COLOURS                                     *exgsearch-highlighting*
+
+ex_pj_help~
+    Help text
+
+ex_pj_help_key~
+    Help mappings
+
+ex_pj_help_comma~
+    Help comma
+
+ex_pj_fold~
+    Folder
+
+ex_pj_tree_line~
+    Tree line
+
+ex_pj_file_name~
+    File name
+
+ex_pj_ft_exvim~
+    .exvim file
+
+ex_pj_ft_error~
+    .err file
+
+If you want to change any of those colours put a line like the following in
+your vimrc:
+>
+    hi ex_pj_fold guifg=Green ctermfg=Green
+<
+See |:highlight| for more information.
+
+==============================================================================
+5. Functions                                             *exgsearch-functions*
+
+                                                 *exgsearch#register_hotkey()*
+exgsearch#register_hotkey({priority}, {key}, {action}, {desc})
+    Register your key-mapping by {key} in ex-gsearch window. The {key} will 
+    execute function you define in {action}. The {priority} will sort your
+    {key} and {desc} in the help context in ex-gsearch window.
+
+                                               *exgsearch#find_current_edit()*
+exgsearch#find_current_edit({focus})
+    Find current edit file and locate the cursor to it in project window. If
+    {focus} is 1, the cursor will jump to project window, otherwise it will
+    stay in current buffer.
+
+                                                *exgsearch#set_file_filters()*
+exgsearch#set_file_filters({filters})
+    Set file filters for ex-gsearch. The {filters} is a file suffix array.
+    For example:
+>
+        call exgsearch#set_file_filters(['c','cpp','h'])
+<
+    The script above will make ex-gsearch only show files with `.c`, `.cpp` 
+    and `.h` suffix.
+
+                                        *exgsearch#set_file_ignore_patterns()*
+exgsearch#set_file_ignore_patterns({patterns})
+
+    TODO: have not implemented yet
+
+                                          *exgsearch#set_folder_filter_mode()*
+exgsearch#set_folder_filter_mode({mode})
+    Set folder filter mode. The {mode} accept value 'include' or 'exclude'. 
+    The mode will be used as filter method for folder fitler setted by 
+    |exgsearch#set_folder_filters()|.
+
+                                              *exgsearch#set_folder_filters()*
+exgsearch#set_folder_filters({filters})
+    Set folder filters for ex-gsearch. The {filters} is a string array which
+    stores the first-level folder names. If filter mode is 'include', it 
+    will show the folders in {filters}. If filter mode is 'exclude', it 
+    *will not* show the folders in {fitlers}. 
+    For example:
+>
+        call exgsearch#set_folder_filters(['src','include'])
+<
+    The script above will make ex-gsearch only show 'src' and 'inlucde' 
+    folder unders the root directory if filter mode is set to 'include'.
+
+==============================================================================
+6. Troubleshooting & Known issues                           *exgsearch-issues*
+
+
+==============================================================================
+7. History                                                 *exgsearch-history*
+
+0.1.0 (2014-04-14)
+    - Initial release
+
+==============================================================================
+ vim: tw=78 ts=8 sw=4 sts=4 et ft=help
