@@ -67,27 +67,21 @@ filter the result.
 ------------------------------------------------------------------------------
 COMMANDS                                                  *exgsearch-commands*
 
-:EXProject {file}                                                 *:EXProject*
-    Open project {file} in ex-gsearch winow. If no {file} provide, exgsearch
-    will use ./files.exgsearch as default. 
+:GSearch {word}                                                     *:GSearch*
+    Global search {word} and list search result in ex-gsearch window.
 
-:EXProjectOpen                                                *:EXProjectOpen*
-    Open ex-gsearch window.
+:EXGSearchCWord                                              *:EXGSearchCWord*
+    Global search <cword> (current word under cursor) and list search result 
+    in ex-gsearch window.
 
-:EXProjectClose                                              *:EXProjectClose*
-    Close ex-gsearch window.
-
-:EXProjectToggle                                            *:EXProjectToggle*
+:EXGSearchToggle                                            *:EXGSearchToggle*
     Toggle ex-gsearch window.
 
-:EXProjectBuild                                              *:EXProjectBuild*
-    Build project tree.
+:EXGSearchOpen                                                *:EXGSearchOpen*
+    Open ex-gsearch window.
 
-:EXProjectFind                                                *:EXProjectFind*
-    Find current edit file in project tree.
-
-:EXProjectRefresh                                          *:EXProjectRefresh*
-    Recursively refresh current folder in project tree.
+:EXGSearchClose                                              *:EXGSearchClose*
+    Close ex-gsearch window.
 
 ------------------------------------------------------------------------------
 KEY MAPPINGS                                              *exgsearch-mappings*
@@ -100,113 +94,114 @@ Default key mappings:
 
                                                          *'exgsearch-<Space>'*
 <Space>
-    Zoom in/out project window
+    Zoom in/out ex-gsearch window
 
                                                             *'exgsearch-<CR>'*
                                                    *'exgsearch-<2-LeftMouse>'*
 <CR> or <2-LeftMouse>
-    When cursor on a file, it will open it in edit window.
-    When cursor on a folder, it will fold in/out the folder.
+    Jump to the search result listed in ex-gsearch window.
 
                                                           *'exgsearch-<S-CR>'*
                                                  *'exgsearch-<S-2-LeftMouse>'*
 <S-CR> or <S-2-LeftMouse>
-    When cursor on a file, it will open it in edit window splitted.
-    When cursor on a folder, it will open the folder path in OS's file 
-    explorer
+    Jump to the search result and open it in edit window splitted.
     
-
-                                                       *'exgsearch-<leader>R'*
-<leader>R
-    Rebuild the project tree
 
                                                        *'exgsearch-<leader>r'*
 <leader>r
-    Refresh current folder your cursor in.
+    Filter out global search contains not include `/` searches.
+    Note: To make this work, you need to apply your `/` search result after 
+    global searches.
 
-                                                               *'exgsearch-o'*
-o
-    Create new file. The cursor must in a file or folder line. 
+                                                      *'exgsearch-<leader>fr'*
+<leader>fr
+    Filter out global search files not include `/` searches.
 
-                                                               *'exgsearch-O'*
-O
-    Create new folder. The cursor must in a folder line. When start create,
-    exgsearch will ask you to input the new folder name.
+                                                       *'exgsearch-<leader>d'*
+<leader>d
+    Filter out global search contains include `/` searches.
+    Note: To make this work, you need to apply your `/` search result after 
+    global searches.
 
-                                                         *'exgsearch-<C-Tab>'*
-<C-Tab>
-    Switch between NERDTree and exgsearch. To make it work, your Vim must 
-    have NERDTree installed. exgsearch will add keymapping of <C-Tab> in 
-    NERDTree when it detect the plugin after Vim started.
+                                                      *'exgsearch-<leader>fd'*
+<leader>fd
+    Filter out global search files include `/` searches.
 
 
 ==============================================================================
 4. Configuration                                     *exgsearch-configuration*
 
-                                                           *g:ex_project_file*
-g:ex_project_file~
-Default: './files.exgsearch'
+                                                        *g:ex_gsearch_winsize*
+g:ex_gsearch_winsize~
+Default: 20
 
-The default path of the project file. When you open the project window and
-no project file specified, it will use this value as default project file 
-path.
+The window size of ex-gsearch window.  
 
-                                                        *g:ex_project_winsize*
-g:ex_project_winsize~
-Default: 30
+                                                   *g:ex_gsearch_winsize_zoom*
+g:ex_gsearch_winsize_zoom~
+Default: 40
 
-The window size of project window.  
+The zoomed size of ex-gsearch window.
 
-                                                   *g:ex_project_winsize_zoom*
-g:ex_project_winsize_zoom~
-Default: 60
-
-The zoomed size of project window.
-
-                                                         *g:ex_project_winpos*
-g:ex_project_winpos~
-Default: 'left'
+                                                         *g:ex_gsearch_winpos*
+g:ex_gsearch_winpos~
+Default: 'bottom'
 Options: 'left', 'right', 'top', 'bottom'
 
-The position of project window.
+The position of ex-gsearch window.
 
-                                                    *g:ex_project_enable_help*
-g:ex_project_enable_help~
+                                                    *g:ex_gsearch_enable_help*
+g:ex_gsearch_enable_help~
 Default: 1
 
 Enable help text in the plugin
 
+                                                    *g:ex_gsearch_ignore_case*
+g:ex_gsearch_ignore_case~
+Default: 1
+
+Enable case sensitive search for |:GSearch|. Remember even we ignore case, 
+|:GSearch| always accept smart case.
+
+                                                    *g:ex_gsearch_enable_sort*
+g:ex_gsearch_enable_sort~
+Default: 1
+
+Enable sorting the search result by file name.
+
+                                           *g:ex_gsearch_sort_lines_threshold*
+g:ex_gsearch_sort_lines_threshold~
+Default: 100
+
+The threshold to enable sorting. If the search resultes more than the search
+threshold, ex-gsearch will not doing sort even |g:ex_gsearch_enable_sort| set
+to 1.
+
 ------------------------------------------------------------------------------
 HIGHLIGHT COLOURS                                     *exgsearch-highlighting*
 
-ex_pj_help~
+ex_gs_help~
     Help text
 
-ex_pj_help_key~
+ex_gs_help_key~
     Help mappings
 
-ex_pj_help_comma~
+ex_gs_help_comma~
     Help comma
 
-ex_pj_fold~
-    Folder
+ex_gs_header~
+    Search result title
 
-ex_pj_tree_line~
-    Tree line
+ex_gs_filename~
+    Search result filename
 
-ex_pj_file_name~
-    File name
-
-ex_pj_ft_exvim~
-    .exvim file
-
-ex_pj_ft_error~
-    .err file
+ex_gs_linenr~
+    Search result line number
 
 If you want to change any of those colours put a line like the following in
 your vimrc:
 >
-    hi ex_pj_fold guifg=Green ctermfg=Green
+    hi ex_gs_filename guifg=Green ctermfg=Green
 <
 See |:highlight| for more information.
 
@@ -219,48 +214,30 @@ exgsearch#register_hotkey({priority}, {key}, {action}, {desc})
     execute function you define in {action}. The {priority} will sort your
     {key} and {desc} in the help context in ex-gsearch window.
 
-                                               *exgsearch#find_current_edit()*
-exgsearch#find_current_edit({focus})
-    Find current edit file and locate the cursor to it in project window. If
-    {focus} is 1, the cursor will jump to project window, otherwise it will
-    stay in current buffer.
-
-                                                *exgsearch#set_file_filters()*
-exgsearch#set_file_filters({filters})
-    Set file filters for ex-gsearch. The {filters} is a file suffix array.
-    For example:
+                                                     *exgsearch#set_id_file()*
+exgsearch#set_id_file({path})
+    Set the id file path. For example, if you put your mkid generated ID file
+    in './.mkid/', you can write:
 >
-        call exgsearch#set_file_filters(['c','cpp','h'])
+    call exgsearch#set_id_file('./.mkid/ID')
 <
-    The script above will make ex-gsearch only show files with `.c`, `.cpp` 
-    and `.h` suffix.
-
-                                        *exgsearch#set_file_ignore_patterns()*
-exgsearch#set_file_ignore_patterns({patterns})
-
-    TODO: have not implemented yet
-
-                                          *exgsearch#set_folder_filter_mode()*
-exgsearch#set_folder_filter_mode({mode})
-    Set folder filter mode. The {mode} accept value 'include' or 'exclude'. 
-    The mode will be used as filter method for folder fitler setted by 
-    |exgsearch#set_folder_filters()|.
-
-                                              *exgsearch#set_folder_filters()*
-exgsearch#set_folder_filters({filters})
-    Set folder filters for ex-gsearch. The {filters} is a string array which
-    stores the first-level folder names. If filter mode is 'include', it 
-    will show the folders in {filters}. If filter mode is 'exclude', it 
-    *will not* show the folders in {fitlers}. 
-    For example:
->
-        call exgsearch#set_folder_filters(['src','include'])
-<
-    The script above will make ex-gsearch only show 'src' and 'inlucde' 
-    folder unders the root directory if filter mode is set to 'include'.
 
 ==============================================================================
 6. Troubleshooting & Known issues                           *exgsearch-issues*
+
+mkid: Can’t create ID in C:\ in Windows~
+
+If you use mkid and meet the following message on Windows:
+
+>
+    mkid: can’t get working directory: Permission denied
+<
+
+This is probably a bug for GnuWin32 id-utils, it can not create ID in C:\, 
+I don’t have time to debug the mkid win32 souce code, so currently the solution 
+is: Put you project in in D:\ or other volumn instead. 
+
+If some one can fix this problem, please, please send us your patches! 
 
 
 ==============================================================================
