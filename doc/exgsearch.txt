@@ -109,7 +109,7 @@ Default key mappings:
 
                                                        *'exgsearch-<leader>r'*
 <leader>r
-    Filter out global search contains not include `/` searches.
+    Filter out global search contents not include `/` searches.
     Note: To make this work, you need to apply your `/` search result after 
     global searches.
 
@@ -119,7 +119,7 @@ Default key mappings:
 
                                                        *'exgsearch-<leader>d'*
 <leader>d
-    Filter out global search contains include `/` searches.
+    Filter out global search contents include `/` searches.
     Note: To make this work, you need to apply your `/` search result after 
     global searches.
 
