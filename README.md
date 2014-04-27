@@ -7,7 +7,7 @@ In ex-gsearch, you can:
 - Filter search result by ex-gsearch's powerful filter method.
 - Jump to the search result.
 
-ex-gsearch is also a part of [exVim](https://github.com/exvim/main) project
+ex-gsearch is also a part of [exVim](https://github.com/exvim/main) project.
 
 ## Requirements
 
