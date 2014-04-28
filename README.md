@@ -1,3 +1,16 @@
+- - -
+- [Intro](#intro)
+- [Requirements](#requirements)
+- [Installation](#installation)
+  - [Install ex-utility](#install-ex-utility)
+  - [Install id-utils](#install-id-utils)
+  - [Install ex-gsearch](#install-ex-gsearch)
+- [Usage](#usage)
+
+For more details, check [exVim's Docs: Global Search](http://exvim.github.io/docs/global-search)
+
+- - -
+
 # Intro
 
 ex-gsearch is a global search plugin for Vim. By default it use id-utils as its search engine.
