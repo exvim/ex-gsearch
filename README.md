@@ -44,15 +44,15 @@ GNU-Win32 project: http://gnuwin32.sourceforge.net/packages/id-utils.htm
 **Mac**
 
     ## use Homebrew
-    brew install id-utils
+    brew install idutils
 
 **Linux**
 
     ## use pat-get
-    apt-get install id-utils
+    apt-get install idutils
 
     ## use yum
-    yum install id-utils
+    yum install idutils
 
     ## or compile id-utils from source
 
