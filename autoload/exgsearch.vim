@@ -22,8 +22,8 @@ function exgsearch#bind_mappings()
 endfunction
 
 " exgsearch#register_hotkey {{{2
-function exgsearch#register_hotkey( priority, key, action, desc )
-    call ex#keymap#register( s:keymap, a:priority, a:key, a:action, a:desc )
+function exgsearch#register_hotkey( priority, local, key, action, desc )
+    call ex#keymap#register( s:keymap, a:priority, a:local, a:key, a:action, a:desc )
 endfunction
 
 " exgsearch#toggle_help {{{2

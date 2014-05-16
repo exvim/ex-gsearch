@@ -41,17 +41,17 @@ command! EXGSearchClose call exgsearch#close_window()
 "}}}
 
 " default key mappings {{{1
-call exgsearch#register_hotkey( 1  , '<F1>'            , ":call exgsearch#toggle_help()<CR>"           , 'Toggle help.' )
-call exgsearch#register_hotkey( 2  , '<ESC>'           , ":EXGSearchClose<CR>"                         , 'Close window.' )
-call exgsearch#register_hotkey( 3  , '<Space>'         , ":call exgsearch#toggle_zoom()<CR>"           , 'Zoom in/out project window.' )
-call exgsearch#register_hotkey( 4  , '<CR>'            , ":call exgsearch#confirm_select('')<CR>"      , 'Go to the search result.' )
-call exgsearch#register_hotkey( 5  , '<2-LeftMouse>'   , ":call exgsearch#confirm_select('')<CR>"      , 'Go to the search result.' )
-call exgsearch#register_hotkey( 6  , '<S-CR>'          , ":call exgsearch#confirm_select('shift')<CR>" , 'Go to the search result in split window.' )
-call exgsearch#register_hotkey( 7  , '<S-2-LeftMouse>' , ":call exgsearch#confirm_select('shift')<CR>" , 'Go to the search result in split window.' )
-call exgsearch#register_hotkey( 8  , '<leader>r'       , ":exec 'Filter ' . @/<CR>"                    , 'Filter search result.' )
-call exgsearch#register_hotkey( 9  , '<leader>fr'      , ":exec 'FilterFile ' . @/<CR>"                , 'Filter files in search result.' )
-call exgsearch#register_hotkey( 10 , '<leader>d'       , ":exec 'ReverseFilter ' . @/<CR>"             , 'Reverse filter search result.' )
-call exgsearch#register_hotkey( 11 , '<leader>fd'      , ":exec 'ReverseFilterFile ' . @/<CR>"         , 'Reverse filter files in search result.' )
+call exgsearch#register_hotkey( 1  , 1, '<F1>'            , ":call exgsearch#toggle_help()<CR>"           , 'Toggle help.' )
+call exgsearch#register_hotkey( 2  , 1, '<ESC>'           , ":EXGSearchClose<CR>"                         , 'Close window.' )
+call exgsearch#register_hotkey( 3  , 1, '<Space>'         , ":call exgsearch#toggle_zoom()<CR>"           , 'Zoom in/out project window.' )
+call exgsearch#register_hotkey( 4  , 1, '<CR>'            , ":call exgsearch#confirm_select('')<CR>"      , 'Go to the search result.' )
+call exgsearch#register_hotkey( 5  , 1, '<2-LeftMouse>'   , ":call exgsearch#confirm_select('')<CR>"      , 'Go to the search result.' )
+call exgsearch#register_hotkey( 6  , 1, '<S-CR>'          , ":call exgsearch#confirm_select('shift')<CR>" , 'Go to the search result in split window.' )
+call exgsearch#register_hotkey( 7  , 1, '<S-2-LeftMouse>' , ":call exgsearch#confirm_select('shift')<CR>" , 'Go to the search result in split window.' )
+call exgsearch#register_hotkey( 8  , 1, '<leader>r'       , ":exec 'Filter ' . @/<CR>"                    , 'Filter search result.' )
+call exgsearch#register_hotkey( 9  , 1, '<leader>fr'      , ":exec 'FilterFile ' . @/<CR>"                , 'Filter files in search result.' )
+call exgsearch#register_hotkey( 10 , 1, '<leader>d'       , ":exec 'ReverseFilter ' . @/<CR>"             , 'Reverse filter search result.' )
+call exgsearch#register_hotkey( 11 , 1, '<leader>fd'      , ":exec 'ReverseFilterFile ' . @/<CR>"         , 'Reverse filter files in search result.' )
 "}}}
 
 call ex#register_plugin( 'exgsearch', { 'actions': ['autoclose'] } )
