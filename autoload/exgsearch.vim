@@ -209,7 +209,7 @@ function s:sort_search_result( start, end )
     silent call setline(a:start, lines)
 endfunction
 
-function exgsearch#search( pattern )
+function exgsearch#search( pattern, method )
     let s:confirm_at = -1
     let id_path = s:id_file
 
@@ -223,10 +223,10 @@ function exgsearch#search( pattern )
     " start search process
     if ignore_case
         echomsg 'search ' . a:pattern . '...(case insensitive)'
-        let cmd = 'lid --result=grep -i -f"' . id_path . '" -s ' . a:pattern
+        let cmd = 'lid --result=grep -i -f"' . id_path . '" ' . a:method . ' ' . a:pattern
     else
         echomsg 'search ' . a:pattern . '...(case sensitive)'
-        let cmd = 'lid --result=grep -f"' . id_path . '" -s ' . a:pattern
+        let cmd = 'lid --result=grep -f"' . id_path . '" ' . a:method . ' ' . a:pattern
     endif
     let result = system(cmd)
 

@@ -67,8 +67,17 @@ filter the result.
 ------------------------------------------------------------------------------
 COMMANDS                                                  *exgsearch-commands*
 
-:GSearch {word}                                                     *:GSearch*
-    Global search {word} and list search result in ex-gsearch window.
+:GS {word}                                                               *:GS*
+    Global search {word} by '-s' method and list search result in 
+    ex-gsearch window.
+
+:GSW {word}                                                             *:GSW*
+    Global search {word} by '-w' method and list search result in 
+    ex-gsearch window.
+
+:GSR {word}                                                             *:GSR*
+    Global search {word} by '-r' method and list search result in 
+    ex-gsearch window.
 
 :EXGSearchCWord                                              *:EXGSearchCWord*
     Global search <cword> (current word under cursor) and list search result 
