@@ -7,7 +7,7 @@ let s:keymap = {}
 
 let s:help_open = 0
 let s:help_text_short = [
-            \ '" Press <F1> for help',
+            \ '" Press ? for help',
             \ '',
             \ ]
 let s:help_text = s:help_text_short

@@ -43,7 +43,7 @@ command! EXGSearchClose call exgsearch#close_window()
 "}}}
 
 " default key mappings {{{1
-call exgsearch#register_hotkey( 1  , 1, '<F1>'            , ":call exgsearch#toggle_help()<CR>"           , 'Toggle help.' )
+call exgsearch#register_hotkey( 1  , 1, '?'            , ":call exgsearch#toggle_help()<CR>"           , 'Toggle help.' )
 if has('gui_running')
     call exgsearch#register_hotkey( 2  , 1, '<ESC>'           , ":EXGSearchClose<CR>"                         , 'Close window.' )
 else
