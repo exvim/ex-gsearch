@@ -53,7 +53,9 @@ endfunction
 
 function exgsearch#init_buffer()
     set filetype=exgsearch
-    au! BufWinLeave <buffer> call <SID>on_close()
+    augroup exgsearch
+        au! BufWinLeave <buffer> call <SID>on_close()
+    augroup END
 
     if line('$') <= 1 && g:ex_gsearch_enable_help
         silent call append ( 0, s:help_text )
