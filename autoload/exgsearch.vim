@@ -158,6 +158,21 @@ function exgsearch#confirm_select(modifier)
     call ex#window#goto_edit_window()
 
     " open the file
+    if a:modifier == 'shift'
+        if idx > 0
+            " get line number 
+            let line = strpart(line, idx+1) 
+            let idx = stridx(line, ":") 
+            let linenr  = eval(strpart(line, 0, idx)) 
+        endif
+        exe ' silent pedit +'.linenr . ' ' .escape(filename, ' ')
+        silent! wincmd P
+        if &previewwindow
+            call ex#hl#target_line(line('.'))
+            wincmd p
+        endif
+        call ex#window#goto_plugin_window()
+    else
     if bufnr('%') != bufnr(filename) 
         exe ' silent e ' . escape(filename,' ') 
     endif 
@@ -181,6 +196,7 @@ function exgsearch#confirm_select(modifier)
     exe 'normal! zz'
     call ex#hl#target_line(line('.'))
     call ex#window#goto_plugin_window()
+    endif
 endfunction
 
 " exgsearch#search {{{2
