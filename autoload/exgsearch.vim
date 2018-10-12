@@ -57,7 +57,7 @@ function exgsearch#init_buffer()
 
     if line('$') <= 1 && g:ex_gsearch_enable_help
         silent call append ( 0, s:help_text )
-        silent exec '$d'
+        silent exec '$d _'
     endif
 endfunction
 
@@ -156,29 +156,47 @@ function exgsearch#confirm_select(modifier)
     call ex#window#goto_edit_window()
 
     " open the file
-    if bufnr('%') != bufnr(filename) 
-        exe ' silent e ' . escape(filename,' ') 
-    endif 
-
-    if idx > 0 
-        " get line number 
-        let line = strpart(line, idx+1) 
-        let idx = stridx(line, ":") 
-        let linenr  = eval(strpart(line, 0, idx)) 
-        exec ' call cursor(linenr, 1)' 
-
-        " jump to the pattern if the code have been modified 
-        let pattern = strpart(line, idx+2) 
-        let pattern = '\V' . substitute( pattern, '\', '\\\', "g" ) 
-        if search(pattern, 'cw') == 0 
-            call ex#warning('Line pattern not found: ' . pattern)
+    if a:modifier == 'shift'
+        if idx > 0
+            " get line number 
+            let line = strpart(line, idx+1) 
+            let idx = stridx(line, ":") 
+            let linenr  = eval(strpart(line, 0, idx)) 
+        endif
+        exe ' silent pedit +'.linenr . ' ' .escape(filename, ' ')
+        silent! wincmd P
+        if &previewwindow
+            call ex#hl#target_line(line('.'))
+        endif
+        " go back to global search window 
+        exe 'normal! zz'
+        call ex#hl#target_line(line('.'))
+        call ex#window#goto_plugin_window()
+    else
+        if bufnr('%') != bufnr(filename) 
+            exe ' silent e ' . escape(filename,' ') 
         endif 
-    endif 
 
-    " go back to global search window 
-    exe 'normal! zz'
-    call ex#hl#target_line(line('.'))
-    call ex#window#goto_plugin_window()
+        if idx > 0 
+            " get line number 
+            let line = strpart(line, idx+1) 
+            let idx = stridx(line, ":") 
+            let linenr  = eval(strpart(line, 0, idx)) 
+            exec ' call cursor(linenr, 1)' 
+
+            " jump to the pattern if the code have been modified 
+            let pattern = strpart(line, idx+2) 
+            let pattern = '\V' . substitute( pattern, '\', '\\\', "g" ) 
+            if search(pattern, 'cw') == 0 
+                call ex#warning('Line pattern not found: ' . pattern)
+            endif 
+        endif 
+
+        " go back to global search window 
+        exe 'normal! zz'
+        call ex#hl#target_line(line('.'))
+        call ex#window#goto_plugin_window()
+    endif
 endfunction
 
 " exgsearch#search {{{2
@@ -223,10 +241,18 @@ function exgsearch#search( pattern, method )
     " start search process
     if ignore_case
         echomsg 'search ' . a:pattern . '...(case insensitive)'
-        let cmd = 'lid --result=grep -i -f"' . id_path . '" ' . a:method . ' ' . a:pattern
+        if g:ex_gsearch_engine == "ag"
+            let cmd = "ag --nogroup --column --nocolor -i " . a:pattern
+        else
+            let cmd = 'lid --result=grep -i -f"' . id_path . '" ' . a:method . ' ' . a:pattern
+        endif
     else
         echomsg 'search ' . a:pattern . '...(case sensitive)'
-        let cmd = 'lid --result=grep -f"' . id_path . '" ' . a:method . ' ' . a:pattern
+        if g:ex_gsearch_engine == "ag"
+            let cmd = "ag --nogroup --column --nocolor " . a:pattern
+        else
+            let cmd = 'lid --result=grep -f"' . id_path . '" ' . a:method . ' ' . a:pattern
+        endif
     endif
     let result = system(cmd)
 
@@ -239,7 +265,7 @@ function exgsearch#search( pattern, method )
     " add online help 
     if g:ex_gsearch_enable_help
         silent call append ( 0, s:help_text )
-        silent exec '$d'
+        silent exec '$d _'
         let start_line = len(s:help_text)
     else
         let start_line = 0
