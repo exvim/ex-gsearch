@@ -255,6 +255,7 @@ function exgsearch#search( pattern, method )
         endif
     endif
     let result = system(cmd)
+    let result = substitute(result, '\r','', 'g') "windows
 
     " open the global search window
     call exgsearch#open_window()
@@ -273,6 +274,7 @@ function exgsearch#search( pattern, method )
 
     " put the result
     silent exec 'normal ' . start_line . 'g'
+    let headercmd = '---------- ' . cmd . ' ----------'
     let header = '---------- ' . a:pattern . ' ----------'
     let start_line += 1
     let text = header . "\n" . result

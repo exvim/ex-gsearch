@@ -16,6 +16,10 @@ if !exists('g:ex_gsearch_ignore_case')
     let g:ex_gsearch_ignore_case = 1
 endif
 
+if !exists('g:ex_gsearch_engine')
+    let g:ex_gsearch_engine = "ag"
+endif
+
 if !exists('g:ex_gsearch_enable_sort')
     let g:ex_gsearch_enable_sort = 1
 endif
