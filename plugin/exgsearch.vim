@@ -55,7 +55,6 @@ if has('gui_running')
 else
     call exgsearch#register_hotkey( 2  , 1, '<leader><ESC>'   , ":EXGSearchClose<CR>"                         , 'Close window.' )
 endif
-" call exgsearch#register_hotkey( 3  , 1, '<Space>'         , ":call exgsearch#toggle_zoom()<CR>"           , 'Zoom in/out project window.' )
 call exgsearch#register_hotkey( 3  , 1, 'z'         , ":call exgsearch#toggle_zoom()<CR>"           , 'Zoom in/out project window.' )
 call exgsearch#register_hotkey( 4  , 1, '<CR>'            , ":call exgsearch#confirm_select('')<CR>"      , 'Go to the search result.' )
 call exgsearch#register_hotkey( 5  , 1, '<2-LeftMouse>'   , ":call exgsearch#confirm_select('')<CR>"      , 'Go to the search result.' )
