@@ -53,7 +53,9 @@ endfunction
 
 function exgsearch#init_buffer()
     set filetype=exgsearch
-    au! BufWinLeave <buffer> call <SID>on_close()
+    augroup exgsearch
+        au! BufWinLeave <buffer> call <SID>on_close()
+    augroup END
 
     if line('$') <= 1 && g:ex_gsearch_enable_help
         silent call append ( 0, s:help_text )
@@ -167,15 +169,13 @@ function exgsearch#confirm_select(modifier)
         silent! wincmd P
         if &previewwindow
             call ex#hl#target_line(line('.'))
+            wincmd p
         endif
-        " go back to global search window 
-        exe 'normal! zz'
-        call ex#hl#target_line(line('.'))
         call ex#window#goto_plugin_window()
     else
-        if bufnr('%') != bufnr(filename) 
-            exe ' silent e ' . escape(filename,' ') 
-        endif 
+    if bufnr('%') != bufnr(filename) 
+        exe ' silent e ' . escape(filename,' ') 
+    endif 
 
         if idx > 0 
             " get line number 
@@ -191,6 +191,7 @@ function exgsearch#confirm_select(modifier)
                 call ex#warning('Line pattern not found: ' . pattern)
             endif 
         endif 
+
 
         " go back to global search window 
         exe 'normal! zz'
