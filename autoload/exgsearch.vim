@@ -177,24 +177,30 @@ function exgsearch#confirm_select(modifier)
         exe ' silent e ' . escape(filename,' ') 
     endif 
 
-        if idx > 0 
-            " get line number 
-            let line = strpart(line, idx+1) 
-            let idx = stridx(line, ":") 
-            let linenr  = eval(strpart(line, 0, idx)) 
-            exec ' call cursor(linenr, 1)' 
+    if idx > 0 
+        " get line number 
+        let line = strpart(line, idx+1) 
+        let idx = stridx(line, ":") 
+        let linenr  = eval(strpart(line, 0, idx)) 
+        exec ' call cursor(linenr, 1)' 
 
-            " jump to the pattern if the code have been modified 
+        " jump to the pattern if the code have been modified 
+        if g:ex_gsearch_engine == "ag"
+            let idx = stridx(line, ":", idx+1) 
+            let pattern = strpart(line, idx+1) 
+        else
             let pattern = strpart(line, idx+2) 
-            let pattern = '\V' . substitute( pattern, '\', '\\\', "g" ) 
-            if search(pattern, 'cw') == 0 
-                call ex#warning('Line pattern not found: ' . pattern)
-            endif 
+        endif
+
+        let pattern = '\V' . substitute( pattern, '\', '\\\', "g" ) 
+        if search(pattern, 'cw') == 0 
+            call ex#warning('Line pattern not found: ' . pattern)
         endif 
+    endif 
 
 
-        " go back to global search window 
-        exe 'normal! zz'
+    " go back to global search window 
+    exe 'normal! zz'
         call ex#hl#target_line(line('.'))
         call ex#window#goto_plugin_window()
     endif
