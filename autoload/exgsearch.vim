@@ -13,6 +13,7 @@ let s:help_text_short = [
 let s:help_text = s:help_text_short
 
 let s:id_file = './ID'
+let s:cwd_search = ''
 " }}}
 
 " functions {{{1
@@ -144,8 +145,9 @@ function exgsearch#confirm_select(modifier)
         let filename = strpart(line, 0, idx) "DISABLE: escape(strpart(line, 0, idx), ' ') 
     endif 
 
+    let filename = s:cwd_search . '/'. filename
     " check if file exists
-    if findfile(filename) == '' 
+    if findfile(filename, '.**;') == '' 
         call ex#warning( filename . ' not found!' ) 
         return
     endif 
@@ -237,6 +239,7 @@ endfunction
 function exgsearch#search( pattern, method )
     let s:confirm_at = -1
     let id_path = s:id_file
+    let s:cwd_search = getcwd()
 
     " ignore case setup
     let ignore_case = g:ex_gsearch_ignore_case
