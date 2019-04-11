@@ -264,6 +264,7 @@ function exgsearch#search( pattern, method )
             let cmd = 'lid --result=grep -f"' . id_path . '" ' . a:method . ' ' . a:pattern
         endif
     endif
+    " echomsg cmd
     let result = system(cmd)
     let result = substitute(result, '\r','', 'g') "windows
 
