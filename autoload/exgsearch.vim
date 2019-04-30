@@ -252,20 +252,25 @@ function exgsearch#search( pattern, method )
     if ignore_case
         echomsg 'search ' . a:pattern . '...(case insensitive)'
         if g:ex_gsearch_engine == "ag"
-            let cmd = "ag --nogroup --column --nocolor -i " . a:pattern
+            let cmd = "ag -i --vimgrep --nogroup --column --nocolor --hidden --ignore '.git' " . a:pattern
         else
             let cmd = 'lid --result=grep -i -f"' . id_path . '" ' . a:method . ' ' . a:pattern
         endif
     else
         echomsg 'search ' . a:pattern . '...(case sensitive)'
         if g:ex_gsearch_engine == "ag"
-            let cmd = "ag --nogroup --column --nocolor " . a:pattern
+            let cmd = "ag --vimgrep --nogroup --column --nocolor --hidden --ignore '.git' " . a:pattern
         else
             let cmd = 'lid --result=grep -f"' . id_path . '" ' . a:method . ' ' . a:pattern
         endif
     endif
     " echomsg cmd
-    let result = system(cmd)
+    if exgsearch#has_vimproc()
+        " echo vimproc#system('ag -i --vimgrep --literal --hidden --ignore ''.git'' ''system'' ')
+        let result = vimproc#system(cmd)
+    else
+        let result = system(cmd)
+    endif
     let result = substitute(result, '\r','', 'g') "windows
 
     " open the global search window
@@ -345,6 +350,17 @@ function exgsearch#set_id_file( path )
     let s:id_file = a:path
 endfunction
 
+function! exgsearch#has_vimproc()
+  if !exists('s:exists_vimproc')
+    try
+      silent call vimproc#version()
+      let s:exists_vimproc = 1
+    catch
+      let s:exists_vimproc = 0
+    endtry
+  endif
+  return s:exists_vimproc
+endfunction "}}}
 
 " }}}1
 
