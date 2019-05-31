@@ -253,6 +253,8 @@ function exgsearch#search( pattern, method )
         echomsg 'search ' . a:pattern . '...(case insensitive)'
         if g:ex_gsearch_engine == "ag"
             let cmd = "ag -i --vimgrep --nogroup --column --nocolor --hidden --ignore '.git' " . a:pattern
+        elseif g:ex_gsearch_engine == "rg"
+            let cmd = "rg --vimgrep --column --line-number --no-heading --ignore-case --hidden " . a:pattern
         else
             let cmd = 'lid --result=grep -i -f"' . id_path . '" ' . a:method . ' ' . a:pattern
         endif
@@ -260,12 +262,13 @@ function exgsearch#search( pattern, method )
         echomsg 'search ' . a:pattern . '...(case sensitive)'
         if g:ex_gsearch_engine == "ag"
             let cmd = "ag --vimgrep --nogroup --column --nocolor --hidden --ignore '.git' " . a:pattern
+        elseif g:ex_gsearch_engine == "rg"
+            let cmd = "rg --vimgrep --column --line-number --no-heading --case-sensitive --hidden " . a:pattern
         else
             let cmd = 'lid --result=grep -f"' . id_path . '" ' . a:method . ' ' . a:pattern
         endif
     endif
-    " echomsg cmd
-    if exgsearch#has_vimproc()
+    if exgsearch#has_vimproc() && g:ex_gsearch_engine != 'rg'
         " echo vimproc#system('ag -i --vimgrep --literal --hidden --ignore ''.git'' ''system'' ')
         let result = vimproc#system(cmd)
     else
