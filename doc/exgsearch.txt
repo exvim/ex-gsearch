@@ -186,6 +186,10 @@ The threshold to enable sorting. If the search resultes more than the search
 threshold, ex-gsearch will not doing sort even |g:ex_gsearch_enable_sort| set
 to 1.
 
+                                                    *g:ex_gsearch_engine*
+g:ex_gsearch_engine~
+Default: "ag"
+
 ------------------------------------------------------------------------------
 HIGHLIGHT COLOURS                                     *exgsearch-highlighting*
 

@@ -7,12 +7,13 @@ let s:keymap = {}
 
 let s:help_open = 0
 let s:help_text_short = [
-            \ '" Press <F1> for help',
+            \ '" Press ? for help',
             \ '',
             \ ]
 let s:help_text = s:help_text_short
 
 let s:id_file = './ID'
+let s:cwd_search = ''
 " }}}
 
 " functions {{{1
@@ -59,7 +60,7 @@ function exgsearch#init_buffer()
 
     if line('$') <= 1 && g:ex_gsearch_enable_help
         silent call append ( 0, s:help_text )
-        silent exec '$d'
+        silent exec '$d _'
     endif
 endfunction
 
@@ -144,8 +145,9 @@ function exgsearch#confirm_select(modifier)
         let filename = strpart(line, 0, idx) "DISABLE: escape(strpart(line, 0, idx), ' ') 
     endif 
 
+    let filename = s:cwd_search . '/'. filename
     " check if file exists
-    if findfile(filename) == '' 
+    if findfile(filename, '.**;') == '' 
         call ex#warning( filename . ' not found!' ) 
         return
     endif 
@@ -185,17 +187,24 @@ function exgsearch#confirm_select(modifier)
         exec ' call cursor(linenr, 1)' 
 
         " jump to the pattern if the code have been modified 
-        let pattern = strpart(line, idx+2) 
+        if g:ex_gsearch_engine == "ag"
+            let idx = stridx(line, ":", idx+1) 
+            let pattern = strpart(line, idx+1) 
+        else
+            let pattern = strpart(line, idx+2) 
+        endif
+
         let pattern = '\V' . substitute( pattern, '\', '\\\', "g" ) 
         if search(pattern, 'cw') == 0 
             call ex#warning('Line pattern not found: ' . pattern)
         endif 
     endif 
 
+
     " go back to global search window 
     exe 'normal! zz'
-    call ex#hl#target_line(line('.'))
-    call ex#window#goto_plugin_window()
+        call ex#hl#target_line(line('.'))
+        call ex#window#goto_plugin_window()
     endif
 endfunction
 
@@ -230,6 +239,7 @@ endfunction
 function exgsearch#search( pattern, method )
     let s:confirm_at = -1
     let id_path = s:id_file
+    let s:cwd_search = getcwd()
 
     " ignore case setup
     let ignore_case = g:ex_gsearch_ignore_case
@@ -241,12 +251,30 @@ function exgsearch#search( pattern, method )
     " start search process
     if ignore_case
         echomsg 'search ' . a:pattern . '...(case insensitive)'
-        let cmd = 'lid --result=grep -i -f"' . id_path . '" ' . a:method . ' ' . a:pattern
+        if g:ex_gsearch_engine == "ag"
+            let cmd = "ag -i --vimgrep --nogroup --column --nocolor --hidden --ignore '.git' " . a:pattern
+        elseif g:ex_gsearch_engine == "rg"
+            let cmd = "rg --vimgrep --column --line-number --no-heading --ignore-case --hidden " . a:pattern
+        else
+            let cmd = 'lid --result=grep -i -f"' . id_path . '" ' . a:method . ' ' . a:pattern
+        endif
     else
         echomsg 'search ' . a:pattern . '...(case sensitive)'
-        let cmd = 'lid --result=grep -f"' . id_path . '" ' . a:method . ' ' . a:pattern
+        if g:ex_gsearch_engine == "ag"
+            let cmd = "ag --vimgrep --nogroup --column --nocolor --hidden --ignore '.git' " . a:pattern
+        elseif g:ex_gsearch_engine == "rg"
+            let cmd = "rg --vimgrep --column --line-number --no-heading --case-sensitive --hidden " . a:pattern
+        else
+            let cmd = 'lid --result=grep -f"' . id_path . '" ' . a:method . ' ' . a:pattern
+        endif
     endif
-    let result = system(cmd)
+    if exgsearch#has_vimproc() && g:ex_gsearch_engine != 'rg'
+        " echo vimproc#system('ag -i --vimgrep --literal --hidden --ignore ''.git'' ''system'' ')
+        let result = vimproc#system(cmd)
+    else
+        let result = system(cmd)
+    endif
+    let result = substitute(result, '\r','', 'g') "windows
 
     " open the global search window
     call exgsearch#open_window()
@@ -257,7 +285,7 @@ function exgsearch#search( pattern, method )
     " add online help 
     if g:ex_gsearch_enable_help
         silent call append ( 0, s:help_text )
-        silent exec '$d'
+        silent exec '$d _'
         let start_line = len(s:help_text)
     else
         let start_line = 0
@@ -265,6 +293,7 @@ function exgsearch#search( pattern, method )
 
     " put the result
     silent exec 'normal ' . start_line . 'g'
+    let headercmd = '---------- ' . cmd . ' ----------'
     let header = '---------- ' . a:pattern . ' ----------'
     let start_line += 1
     let text = header . "\n" . result
@@ -324,6 +353,17 @@ function exgsearch#set_id_file( path )
     let s:id_file = a:path
 endfunction
 
+function! exgsearch#has_vimproc()
+  if !exists('s:exists_vimproc')
+    try
+      silent call vimproc#version()
+      let s:exists_vimproc = 1
+    catch
+      let s:exists_vimproc = 0
+    endtry
+  endif
+  return s:exists_vimproc
+endfunction "}}}
 
 " }}}1
 
